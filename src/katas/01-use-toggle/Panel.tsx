@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useToggle } from './useToggle';
 
 /**
@@ -6,19 +5,19 @@ import { useToggle } from './useToggle';
  * 三份 useState + 三份 `(v) => !v`，改一個要記得改三個。
  */
 export function Panel() {
-  const [wifi, setWifi] = useToggle(false);
-  const [bluetooth, setBluetooth] = useToggle(true);
-  const [darkMode, setDarkMode] = useToggle(false);
+  const [wifi, toggleWifi] = useToggle(false);
+  const [bluetooth, toggleBluetooth] = useToggle(true);
+  const [darkMode, toggleDarkMode] = useToggle(false);
 
   return (
     <div>
-      <button onClick={setWifi}>
+      <button onClick={toggleWifi}>
         Wi-Fi: {wifi ? 'on' : 'off'}
       </button>
-      <button onClick={setBluetooth}>
+      <button onClick={toggleBluetooth}>
         Bluetooth: {bluetooth ? 'on' : 'off'}
       </button>
-      <button onClick={setDarkMode}>
+      <button onClick={toggleDarkMode}>
         Dark Mode: {darkMode ? 'on' : 'off'}
       </button>
     </div>
