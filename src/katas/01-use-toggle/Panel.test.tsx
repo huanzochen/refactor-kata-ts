@@ -24,10 +24,6 @@ test('Bluetooth 預設 on，點一下變 off', async () => {
 test('各開關互不影響', async () => {
   render(<Panel />);
   await userEvent.click(screen.getByRole('button', { name: /Dark Mode/ }));
-  expect(screen.getByRole('button', { name: /Dark Mode/ })).toHaveTextContent(
-    'Dark Mode: on',
-  );
-  expect(screen.getByRole('button', { name: /Wi-Fi/ })).toHaveTextContent(
-    'Wi-Fi: off',
-  );
+  expect(screen.getByRole('button', { name: /Dark Mode/ })).toHaveTextContent('Dark Mode: on');
+  expect(screen.getByRole('button', { name: /Wi-Fi/ })).toHaveTextContent('Wi-Fi: off');
 });

@@ -1,44 +1,42 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from 'react';
 
-const MIN_WIDTH = 150;
-const MAX_WIDTH = 500;
-const DEFAULT_WIDTH = 250;
+export function useResizable(opts: { initial: number; min: number; max: number }): {
+  width: number;
+  isResizing: boolean;
+  onMouseDown: (e: React.MouseEvent) => void;
+} {
+  const [width, setWidth] = useState(opts.initial);
+  const [isResizing, setIsResizing] = useState(false);
 
-export function useResizeable(opts:{initial: number; min: number; max: number;}): {width: number; onMouseDown: (e: React.MouseEvent) => void;}{
+  const handleMouseMove = useCallback(
+    (e: MouseEvent) => {
+      setWidth(Math.min(opts.max, Math.max(opts.min, e.clientX)));
+    },
+    [opts.min, opts.max]
+  );
 
-      const [width, setWidth] = useState(opts.initial);
+  const handleMouseUp = useCallback(() => {
+    setIsResizing(false);
+    document.removeEventListener('mousemove', handleMouseMove);
+    document.removeEventListener('mouseup', handleMouseUp);
+  }, [handleMouseMove]);
 
-      const isResizing = useRef(false);
+  const handleMouseDown = useCallback(
+    (e: React.MouseEvent) => {
+      e.preventDefault();
+      setIsResizing(true);
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+    },
+    [handleMouseMove, handleMouseUp]
+  );
 
-      const handleMouseDown = useCallback((e: React.MouseEvent) => {
-        e.preventDefault();
-        isResizing.current = true;
-      }, []);
-    
-      const handleMouseMove = useCallback((e: MouseEvent) => {
-        if (!isResizing.current) return;
-        setWidth(Math.min(MAX_WIDTH, Math.max(MIN_WIDTH, e.clientX)));
-      }, []);
-    
-      const handleMouseUp = useCallback(() => {
-        isResizing.current = false;
-      }, []);
-
-
-    useEffect(() => {
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
+  useEffect(() => {
     return () => {
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
     };
   }, [handleMouseMove, handleMouseUp]);
 
-
-  return {width, onMouseDown: handleMouseDown}
-
-
-
-
-
+  return { width, isResizing, onMouseDown: handleMouseDown };
 }

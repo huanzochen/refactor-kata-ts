@@ -26,7 +26,12 @@ describe('cartReducer 現況行為', () => {
   });
 
   test('remove 會移除該品項', () => {
-    const state: CartState = { items: [{ id: 'a', qty: 1 }, { id: 'b', qty: 1 }] };
+    const state: CartState = {
+      items: [
+        { id: 'a', qty: 1 },
+        { id: 'b', qty: 1 },
+      ],
+    };
     expect(cartReducer(state, { type: 'remove', id: 'a' })).toEqual({
       items: [{ id: 'b', qty: 1 }],
     });

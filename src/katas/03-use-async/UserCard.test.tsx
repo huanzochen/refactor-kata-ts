@@ -12,9 +12,7 @@ test('資料還沒回來時顯示 Loading', () => {
 
 test('成功後顯示使用者名稱', async () => {
   render(<UserCard fetchUser={async () => ({ id: 1, name: 'Ada' })} />);
-  await waitFor(() =>
-    expect(screen.getByText('Hello, Ada')).toBeInTheDocument(),
-  );
+  await waitFor(() => expect(screen.getByText('Hello, Ada')).toBeInTheDocument());
 });
 
 test('失敗後顯示錯誤訊息', async () => {
@@ -23,17 +21,13 @@ test('失敗後顯示錯誤訊息', async () => {
       fetchUser={async () => {
         throw new Error('boom');
       }}
-    />,
+    />
   );
-  await waitFor(() =>
-    expect(screen.getByRole('alert')).toHaveTextContent('boom'),
-  );
+  await waitFor(() => expect(screen.getByRole('alert')).toHaveTextContent('boom'));
 });
 
 test('成功後不應同時殘留 Loading', async () => {
   render(<UserCard fetchUser={async () => ({ id: 2, name: 'Grace' })} />);
-  await waitFor(() =>
-    expect(screen.getByText('Hello, Grace')).toBeInTheDocument(),
-  );
+  await waitFor(() => expect(screen.getByText('Hello, Grace')).toBeInTheDocument());
   expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
 });

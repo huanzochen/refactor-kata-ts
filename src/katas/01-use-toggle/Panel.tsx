@@ -10,15 +10,9 @@ export function Panel() {
 
   return (
     <div>
-      <button onClick={toggleWifi}>
-        Wi-Fi: {wifi ? 'on' : 'off'}
-      </button>
-      <button onClick={toggleBluetooth}>
-        Bluetooth: {bluetooth ? 'on' : 'off'}
-      </button>
-      <button onClick={toggleDarkMode}>
-        Dark Mode: {darkMode ? 'on' : 'off'}
-      </button>
+      <button onClick={toggleWifi}>Wi-Fi: {wifi ? 'on' : 'off'}</button>
+      <button onClick={toggleBluetooth}>Bluetooth: {bluetooth ? 'on' : 'off'}</button>
+      <button onClick={toggleDarkMode}>Dark Mode: {darkMode ? 'on' : 'off'}</button>
     </div>
   );
 }

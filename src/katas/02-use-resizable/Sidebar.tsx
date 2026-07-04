@@ -1,7 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { useResizeable } from './useResizable';
-
-
+import { useResizable } from './useResizable';
 
 const NAV_ITEMS = [
   { id: 'dashboard', label: 'Dashboard', icon: '📊' },
@@ -37,19 +35,21 @@ const currentUser: User = {
  * 註：這幾乎就是 chartbutton_demo_ 的 Home.tsx 側欄邏輯。練完可直接搬回去用。
  */
 export function Sidebar() {
-
-  const {width, onMouseDown: handleMouseDown} = useResizeable({initial: 250, min: 150, max: 500})
-
+  const {
+    width,
+    isResizing,
+    onMouseDown: handleMouseDown,
+  } = useResizable({
+    initial: 250,
+    min: 150,
+    max: 500,
+  });
 
   const [activeNav, setActiveNav] = useState('dashboard');
   const [collapsed, setCollapsed] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
-
-
-
-
-  const filteredNav = NAV_ITEMS.filter(item =>
+  const filteredNav = NAV_ITEMS.filter((item) =>
     item.label.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -60,14 +60,14 @@ export function Sidebar() {
       data-testid="sidebar"
       style={{
         width,
-        minWidth: MIN_WIDTH,
-        maxWidth: MAX_WIDTH,
+        minWidth: 150,
+        maxWidth: 500,
         borderRight: '1px solid #e2e8f0',
         display: 'flex',
         flexDirection: 'column',
         height: '100vh',
         backgroundColor: '#f8fafc',
-        transition: isResizing.current ? 'none' : 'width 0.1s ease',
+        transition: isResizing ? 'none' : 'width 0.1s ease',
       }}
     >
       {/* Resize handle */}
@@ -81,7 +81,7 @@ export function Sidebar() {
           bottom: 0,
           width: 4,
           cursor: 'col-resize',
-          backgroundColor: isResizing.current ? '#3b82f6' : 'transparent',
+          backgroundColor: isResizing ? '#3b82f6' : 'transparent',
         }}
       />
 
@@ -112,7 +112,7 @@ export function Sidebar() {
             type="text"
             placeholder="Search..."
             value={searchQuery}
-            onChange={e => setSearchQuery(e.target.value)}
+            onChange={(e) => setSearchQuery(e.target.value)}
             style={{
               width: '100%',
               padding: '8px 12px',
@@ -127,7 +127,7 @@ export function Sidebar() {
 
       {/* Navigation */}
       <nav style={{ flex: 1, padding: '8px', overflowY: 'auto' }}>
-        {filteredNav.map(item => (
+        {filteredNav.map((item) => (
           <button
             key={item.id}
             onClick={() => setActiveNav(item.id)}
@@ -160,7 +160,7 @@ export function Sidebar() {
           <h3 style={{ fontSize: 12, fontWeight: 600, color: '#64748b', margin: '0 0 8px' }}>
             Quick Actions
           </h3>
-          {QUICK_ACTIONS.map(action => (
+          {QUICK_ACTIONS.map((action) => (
             <button
               key={action.id}
               style={{
