@@ -1,8 +1,7 @@
 import { useToggle } from './useToggle';
 
 /**
- * 味道：三個獨立的布林開關，每一個都手刻一份一模一樣的 toggle 邏輯。
- * 三份 useState + 三份 `(v) => !v`，改一個要記得改三個。
+ * 三個獨立布林開關，共用 useToggle 消除重複的 toggle 邏輯。
  */
 export function Panel() {
   const [wifi, toggleWifi] = useToggle(false);
