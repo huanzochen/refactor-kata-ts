@@ -59,6 +59,7 @@ export function Sidebar() {
     <aside
       data-testid="sidebar"
       style={{
+        position: 'relative',
         width,
         minWidth: 150,
         maxWidth: 500,
