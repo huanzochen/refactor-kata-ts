@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import { useResizable } from './useResizable';
 
 const NAV_ITEMS = [
