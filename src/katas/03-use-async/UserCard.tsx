@@ -25,53 +25,55 @@ type AsyncAction<T> =
   | { type: 'FETCH_SUCCESS'; payload: T }
   | { type: 'FETCH_ERROR'; payload: Error };
 
-export function UserCard({ fetchUser }: { fetchUser: () => Promise<User> }) {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const initialState = { isLoading: false, data: null, error: null };
-
-  function reducer<T>(state: AsyncState<T>, action: AsyncAction<T>) {
-    switch (action.type) {
-      case 'FETCH_START':
-        return { ...state, isLoading: true, error: null };
-      case 'FETCH_SUCCESS':
-        return { ...state, isLoading: false, data: action.payload };
-      case 'FETCH_ERROR':
-        return { ...state, isLoading: false, error: action.payload };
-      default:
-        // 把不可能發生的 action 賦予給 never 型別的變數
-        const _exhaustiveCheck: never = action;
-        // 如果未來新增了 action type 但忘記寫 case，上面那行就會報錯！
-        throw new Error(`Unhandled action type`);
-    }
+function reducer<T>(state: AsyncState<T>, action: AsyncAction<T>): AsyncState<T> {
+  switch (action.type) {
+    case 'FETCH_START':
+      return { ...state, isLoading: true, error: null };
+    case 'FETCH_SUCCESS':
+      return { ...state, isLoading: false, data: action.payload };
+    case 'FETCH_ERROR':
+      return { ...state, isLoading: false, error: action.payload };
+    default:
+      // 把不可能發生的 action 賦予給 never 型別的變數
+      const _exhaustiveCheck: never = action;
+      // 如果未來新增了 action type 但忘記寫 case，上面那行就會報錯！
+      throw new Error(`Unhandled action type`);
   }
+}
 
+export function UserCard({ fetchUser }: { fetchUser: () => Promise<User> }) {
   // 3. 在元件中使用
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducer, {
+    isLoading: false,
+    data: null,
+    error: null,
+  });
+
+  const { isLoading, data: user, error } = state;
 
   useEffect(() => {
     let cancelled = false;
-    setLoading(true);
-    setError(null);
+    dispatch({ type: 'FETCH_START' });
     fetchUser()
       .then((u) => {
-        if (!cancelled) setUser(u);
+        if (!cancelled) dispatch({ type: 'FETCH_SUCCESS', payload: u });
       })
       .catch((e) => {
-        if (!cancelled) setError(e instanceof Error ? e.message : String(e));
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false);
+        if (!cancelled)
+          dispatch({ type: 'FETCH_ERROR', payload: e instanceof Error ? e : new Error(String(e)) });
       });
     return () => {
       cancelled = true;
     };
   }, [fetchUser]);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div role="alert">Error: {error}</div>;
+  if (isLoading) return <div>Loading...</div>;
+  if (error)
+    return (
+      <div role="alert">
+        Error: {error.name}:{error.message}
+      </div>
+    );
   if (user) return <div>Hello, {user.name}</div>;
   return null;
 }
