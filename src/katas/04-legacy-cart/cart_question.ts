@@ -20,16 +20,24 @@ export type CartAction =
  * 有了安全網之後，再開始重構。
  */
 export function cartReducer(state: CartState, action: CartAction): CartState {
-  switch (action.type) {
-    case 'add': {
-      const found = state.items.some((it) => it.id === action.id);
-      const items = found
-        ? state.items.map((item) => (item.id === action.id ? { ...item, qty: item.qty + 1 } : item))
-        : [...state.items, { id: action.id, qty: 1 }];
-
-      return { items };
+  if (action.type === 'add') {
+    let found = false;
+    const items: CartItem[] = [];
+    for (let i = 0; i < state.items.length; i++) {
+      const it = state.items[i];
+      if (it.id === action.id) {
+        items.push({ id: it.id, qty: it.qty + 1 });
+        found = true;
+      } else {
+        items.push(it);
+      }
     }
-    case 'remove': {
+    if (!found) {
+      items.push({ id: action.id, qty: 1 });
+    }
+    return { items };
+  } else {
+    if (action.type === 'remove') {
       const items: CartItem[] = [];
       for (let i = 0; i < state.items.length; i++) {
         if (state.items[i].id !== action.id) {
@@ -37,8 +45,7 @@ export function cartReducer(state: CartState, action: CartAction): CartState {
         }
       }
       return { items };
-    }
-    default: {
+    } else {
       const items: CartItem[] = [];
       for (let i = 0; i < state.items.length; i++) {
         const it = state.items[i];
