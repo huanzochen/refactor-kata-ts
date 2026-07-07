@@ -42,12 +42,13 @@ function reducer<T>(state: AsyncState<T>, action: AsyncAction<T>): AsyncState<T>
 }
 
 export function UserCard({ fetchUser }: { fetchUser: () => Promise<User> }) {
-  // 3. 在元件中使用
-  const [state, dispatch] = useReducer(reducer, {
+  const initialState: AsyncState<User> = {
     isLoading: false,
     data: null,
     error: null,
-  });
+  };
+  // 3. 在元件中使用
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   const { isLoading, data: user, error } = state;
 
