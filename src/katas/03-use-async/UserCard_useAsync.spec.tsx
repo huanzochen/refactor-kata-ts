@@ -1,5 +1,5 @@
 import { render, screen, waitFor } from '@testing-library/react';
-import { UserCard } from './UserCard';
+import { UserCard } from './UserCard_useReducer';
 
 // 驗證三種對外可見狀態：載入中 / 成功 / 失敗。
 // 不管你用三個 useState、一個 useReducer，還是抽出的 useAsync，行為都該一致。
