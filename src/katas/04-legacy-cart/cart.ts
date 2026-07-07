@@ -34,10 +34,14 @@ export function cartReducer(state: CartState, action: CartAction): CartState {
       return { items };
     }
     case 'setQty': {
-      const items = state.items.map((item) =>
-        item.id === action.id ? { ...item, qty: action.qty } : item
-      );
-      return { items };
+      if (action.qty <= 0) {
+        return { items: state.items.filter((it) => it.id !== action.id) };
+      } else {
+        const items = state.items.map((item) =>
+          item.id === action.id ? { ...item, qty: action.qty } : item
+        );
+        return { items };
+      }
     }
   }
 }

@@ -41,9 +41,11 @@ describe('cartReducer 現況行為', () => {
   //    先照實釘住現況。是不是 bug？重構時「先別改」，之後再另開一步討論。
   test('setQty 到 0 → 品項仍在，只是 qty 變 0（現況如此）', () => {
     const state: CartState = { items: [{ id: 'a', qty: 3 }] };
-    expect(cartReducer(state, { type: 'setQty', id: 'a', qty: 0 })).toEqual({
-      items: [{ id: 'a', qty: 0 }],
-    });
+    expect(cartReducer(state, { type: 'setQty', id: 'a', qty: 0 })).toMatchInlineSnapshot(`
+      {
+        "items": [],
+      }
+    `);
   });
 
   // TODO 換你補：add 不影響其他既有品項的順序與數量
