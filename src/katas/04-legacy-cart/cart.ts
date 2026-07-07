@@ -30,25 +30,18 @@ export function cartReducer(state: CartState, action: CartAction): CartState {
       return { items };
     }
     case 'remove': {
-      const items: CartItem[] = [];
-      for (let i = 0; i < state.items.length; i++) {
-        if (state.items[i].id !== action.id) {
-          items.push(state.items[i]);
-        }
-      }
+      const items = state.items.filter((it) => it.id !== action.id);
       return { items };
     }
     default: {
-      const items: CartItem[] = [];
-      for (let i = 0; i < state.items.length; i++) {
-        const it = state.items[i];
-        if (it.id === action.id) {
-          items.push({ id: it.id, qty: action.qty });
-        } else {
-          items.push(it);
-        }
-      }
-      return { items };
+      const found = state.items.some((it) => it.id === action.id);
+      if (found)
+        return {
+          items: state.items.map((item) =>
+            item.id === action.id ? { ...item, qty: action.qty } : item
+          ),
+        };
+      return state;
     }
   }
 }
