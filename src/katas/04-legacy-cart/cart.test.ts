@@ -47,7 +47,93 @@ describe('cartReducer 現況行為', () => {
   });
 
   // TODO 換你補：add 不影響其他既有品項的順序與數量
+  test('add 不影響其他既有品項的順序與數量', () => {
+    const state: CartState = {
+      items: [{ id: 'c', qty: 2 }],
+    };
+    expect(cartReducer(state, { type: 'add', id: 'b' })).toMatchInlineSnapshot(`
+      {
+        "items": [
+          {
+            "id": "c",
+            "qty": 2,
+          },
+          {
+            "id": "b",
+            "qty": 1,
+          },
+        ],
+      }
+    `);
+  });
+
   // TODO 換你補：remove 一個不存在的 id 會怎樣？
+  test('remove 一個不存在的 id 會怎樣', () => {
+    const state: CartState = {
+      items: [
+        { id: 'b', qty: 1 },
+        { id: 'c', qty: 2 },
+      ],
+    };
+    expect(cartReducer(state, { type: 'remove', id: 'a' })).toMatchInlineSnapshot(`
+      {
+        "items": [
+          {
+            "id": "b",
+            "qty": 1,
+          },
+          {
+            "id": "c",
+            "qty": 2,
+          },
+        ],
+      }
+    `);
+  });
   // TODO 換你補：setQty 一個不存在的 id 會怎樣？
+  test('setQty 一個不存在的 id 會怎樣', () => {
+    const state: CartState = {
+      items: [
+        { id: 'b', qty: 1 },
+        { id: 'c', qty: 2 },
+      ],
+    };
+    expect(cartReducer(state, { type: 'setQty', id: 'a', qty: 0 })).toMatchInlineSnapshot(`
+      {
+        "items": [
+          {
+            "id": "b",
+            "qty": 1,
+          },
+          {
+            "id": "c",
+            "qty": 2,
+          },
+        ],
+      }
+    `);
+  });
   // TODO 換你補：setQty 到負數會怎樣？
+  test('setQty 到負數會怎樣', () => {
+    const state: CartState = {
+      items: [
+        { id: 'b', qty: 1 },
+        { id: 'c', qty: 2 },
+      ],
+    };
+    expect(cartReducer(state, { type: 'setQty', id: 'a', qty: -1 })).toMatchInlineSnapshot(`
+      {
+        "items": [
+          {
+            "id": "b",
+            "qty": 1,
+          },
+          {
+            "id": "c",
+            "qty": 2,
+          },
+        ],
+      }
+    `);
+  });
 });
