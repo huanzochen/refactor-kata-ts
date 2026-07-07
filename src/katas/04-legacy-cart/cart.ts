@@ -33,15 +33,11 @@ export function cartReducer(state: CartState, action: CartAction): CartState {
       const items = state.items.filter((it) => it.id !== action.id);
       return { items };
     }
-    default: {
-      const found = state.items.some((it) => it.id === action.id);
-      if (found)
-        return {
-          items: state.items.map((item) =>
-            item.id === action.id ? { ...item, qty: action.qty } : item
-          ),
-        };
-      return state;
+    case 'setQty': {
+      const items = state.items.map((item) =>
+        item.id === action.id ? { ...item, qty: action.qty } : item
+      );
+      return { items };
     }
   }
 }
