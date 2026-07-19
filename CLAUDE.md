@@ -34,12 +34,14 @@ npm test        # 先確認全綠 —— 這是起點
 - [x] Kata 2 — use-resizable（已 review，hook 設計優於原題）
 - [x] Kata 3 — use-async（A 版完成但仍用三欄 state，**待改成 discriminated union**；B 版 useAsync 未實作，`UserCard_useAsync.*` 是殘留檔）
 - [x] Kata 4 — legacy-cart（流程標準：重構與行為變更分 commit 👏；**待收尾**：setQty=0 測試標題過期、負數測試釘到不存在的 id）
+- [x] **Gilded Rose 通關（2026-07-19）**（`/Users/huangtz/code/GildedRose-Refactoring-Kata/TypeScript/`）：
+  三層網（18+ 手寫單元測試、30 天 golden master、differential vs 凍結原版
+  `test/vitest/original-gilded-rose.ts`）→ 四分類全拆成 dispatch → Conjured 用 TDD 加入
+  （前綴比對 `startsWith`、`Math.max` 地板）。學到的關鍵教訓已內化：mutation test 驗網、
+  隔離變因、early return 要帶 return、「預期紅卻綠」也是警報、golden master 只答
+  「行為變了嗎」不答「行為對嗎」、期望值三來源（快照存證／手寫立法／differential 比對）。
 
 下一步（依序）：
-1. 收尾上述待辦（kata 3 discriminated union、kata 4 測試標題與負數案例）。
-2. **Gilded Rose kata**（`/Users/huangtz/code/GildedRose-Refactoring-Kata/TypeScript/`）：
-   kata 4 的放大版。流程：先補特徵化測試（手寫關鍵案例 + golden master 30 天 snapshot）
-   → 小步重構巢狀 if/else → 最後加 Conjured 新功能，體驗「先重構再加功能」的差異。
-   鐵則：不動 Item class；Sulfuras 永遠不變；commit 訊息寫有意義的一行（別再 aaa）。
-3. 畢業考：把手法套回 `chartbutton_demo_` 的 Home.tsx
+1. 收尾 kata 待辦（kata 3 discriminated union + 刪 `UserCard_useAsync.*` 殘留；kata 4 測試標題與負數案例）。
+2. 畢業考：把手法套回 `chartbutton_demo_` 的 Home.tsx
    （抽 formatModified + 測試、換用 useResizable，Playwright 快照當安全網）。
